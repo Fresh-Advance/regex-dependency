@@ -1,5 +1,5 @@
 {
-    "name": "sieg/dependency",
+    "name": "sieg/regex-dependency",
     "type": "library",
     "license": "MIT",
     "authors": [
