@@ -3,6 +3,7 @@ RegEx Dependency Container
 
 [![Build Status](https://travis-ci.org/Sieg/regex-dependency.svg?branch=master)](https://travis-ci.org/Sieg/regex-dependency)
 [![Coverage Status](https://coveralls.io/repos/github/Sieg/regex-dependency/badge.svg?branch=master)](https://coveralls.io/github/Sieg/regex-dependency?branch=master)
+[![Packagist](https://img.shields.io/packagist/v/sieg/regex-dependency.svg)](https://packagist.org/packages/sieg/regex-dependency)
 
 Simple keys
 -----------
