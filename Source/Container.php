@@ -51,32 +51,35 @@ class Container
      *
      * @param string $key
      * @param array $arguments
+     *
+     * @throws \Exception if nothing matches by the key in container configuration
+     *
+     * @return mixed
      */
     public function get($key, $arguments = [])
     {
         $hash = $this->getCallHash($key, $arguments);
         if (!isset($this->registry[$hash])) {
-            $this->prepareItem($key, $arguments);
+            $this->registry[$hash] = $this->getNew($key, $arguments);
         }
 
         return $this->registry[$hash];
     }
 
     /**
-     * Initialize/Prepare item by configuration
+     * Get not cached item by dependency configuration
      *
      * @param string $key
      * @param array $arguments
+     *
+     * @throws \Exception if nothing matches by the key in container configuration
+     *
+     * @return mixed
      */
-    protected function prepareItem($key, $arguments = [])
+    public function getNew($key, $arguments = [])
     {
         list($item, $match) = $this->getConfigurationByKey($key);
-        $hash = $this->getCallHash($key, $arguments);
-        if (is_callable($item)) {
-            $this->registry[$hash] = $item($this, $match, $arguments);
-        } else {
-            $this->registry[$hash] = $item;
-        }
+        return is_callable($item) ? $item($this, $match, $arguments) : $item;
     }
 
     /**
