@@ -2,9 +2,10 @@
 
 namespace Sieg\Dependency\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Sieg\Dependency\Container;
 
-class ContainerTest extends \PHPUnit_Framework_TestCase
+class ContainerTest extends TestCase
 {
     public function testConstructor()
     {
