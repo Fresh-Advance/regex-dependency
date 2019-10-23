@@ -78,7 +78,7 @@ class ContainerTest extends TestCase
     public function testGetMatchedItemWithArguments()
     {
         $configuration = [
-            '/Controller\/.*?$/i' => function ($dependency, $key, $arguments=[]) {
+            '/Controller\/.*?$/i' => function ($dependency, $key, $arguments = []) {
                 return $arguments;
             }
         ];
@@ -95,27 +95,25 @@ class ContainerTest extends TestCase
         $this->assertSame($arguments, $result);
     }
 
-    /**
-     * @expectedException   \Exception
-     */
     public function testGetUnMatchedException()
     {
         $configuration = [
             'key' => 'value'
         ];
 
+        $this->expectException(\Exception::class);
+
         $container = new Container($configuration);
         $container->get('anything');
     }
 
-    /**
-     * @expectedException   \Exception
-     */
     public function testGetUnMatchedNullValue()
     {
         $configuration = [
             'key' => null
         ];
+
+        $this->expectException(\Exception::class);
 
         $container = new Container($configuration);
         $container->get('anything');

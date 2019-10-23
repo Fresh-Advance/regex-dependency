@@ -52,9 +52,9 @@ class Container
      * @param string $key
      * @param array $arguments
      *
+     * @return mixed
      * @throws \Exception if nothing matches by the key in container configuration
      *
-     * @return mixed
      */
     public function get($key, $arguments = [])
     {
@@ -72,9 +72,9 @@ class Container
      * @param string $key
      * @param array $arguments
      *
+     * @return mixed
      * @throws \Exception if nothing matches by the key in container configuration
      *
-     * @return mixed
      */
     public function getNew($key, $arguments = [])
     {
@@ -98,11 +98,10 @@ class Container
     /**
      * Get one key configuration from configuration array
      *
-     * @throws \Exception if nothing matches by the key in container configuration
-     *
      * @param string $key
      *
      * @return array($key, $matches)
+     * @throws \Exception if nothing matches by the key in container configuration
      */
     protected function getConfigurationByKey($key)
     {
@@ -110,7 +109,8 @@ class Container
             return [$this->configuration[$key], [$key]];
         } else {
             foreach ($this->configuration as $configurationKey => $item) {
-                if (strpos($configurationKey, "/") === 0
+                if (
+                    strpos($configurationKey, "/") === 0
                     && preg_match($configurationKey, $key, $matches)
                 ) {
                     return [$item, $matches];

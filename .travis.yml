@@ -1,9 +1,9 @@
 language: php
 
 php:
-  - 5.6
-  - 7.0
-  - 7.1
+  - 7.2
+  - 7.3
+  - 7.4snapshot
 
 install:
   - composer install
@@ -14,7 +14,7 @@ before_script:
 
 script:
   - vendor/bin/phpunit --coverage-clover="build/logs/clover.xml" Tests
-  - vendor/bin/phpcs --standard=PSR2 Source
+  - vendor/bin/phpcs --standard=PSR12 Source Tests
 
 after_success:
   - php vendor/bin/coveralls -v
