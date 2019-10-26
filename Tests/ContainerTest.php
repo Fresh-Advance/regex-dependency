@@ -133,4 +133,17 @@ class ContainerTest extends TestCase
 
         $this->assertSame('someValue', $result);
     }
+
+    public function testHas()
+    {
+        $configuration = [
+            '/Controller\/(.*?)$/i' => function ($dependency, $match) {
+                return $match;
+            }
+        ];
+
+        $container = new Container($configuration);
+        $this->assertTrue($container->has('Controller/SomeExample'));
+        $this->assertFalse($container->has('somethingNotExisting'));
+    }
 }

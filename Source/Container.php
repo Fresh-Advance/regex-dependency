@@ -2,7 +2,10 @@
 
 namespace Sieg\Dependency;
 
-class Container
+use Psr\Container\ContainerInterface;
+use Sieg\Dependency\Exception\NotFoundException;
+
+class Container implements ContainerInterface
 {
     /**
      * Configuration variable
@@ -67,14 +70,28 @@ class Container
     }
 
     /**
+     * @inheritDoc
+     */
+    public function has($key)
+    {
+        try {
+            $this->getConfigurationByKey($key);
+        } catch (NotFoundException $e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Get not cached item by dependency configuration
      *
      * @param string $key
      * @param array $arguments
      *
      * @return mixed
-     * @throws \Exception if nothing matches by the key in container configuration
      *
+     * @throws NotFoundException if nothing matches by the key in container configuration
      */
     public function getNew($key, $arguments = [])
     {
@@ -101,7 +118,8 @@ class Container
      * @param string $key
      *
      * @return array($key, $matches)
-     * @throws \Exception if nothing matches by the key in container configuration
+     *
+     * @throws NotFoundException if nothing matches by the key in container configuration
      */
     protected function getConfigurationByKey($key)
     {
@@ -118,6 +136,6 @@ class Container
             }
         }
 
-        throw new \Exception("No configuration in container matches {$key}.");
+        throw new NotFoundException("No configuration in container matches {$key}.");
     }
 }
