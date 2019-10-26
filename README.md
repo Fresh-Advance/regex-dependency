@@ -5,6 +5,12 @@ RegEx Dependency Container
 [![Coverage Status](https://coveralls.io/repos/github/Sieg/regex-dependency/badge.svg?branch=master)](https://coveralls.io/github/Sieg/regex-dependency?branch=master)
 [![Packagist](https://img.shields.io/packagist/v/sieg/regex-dependency.svg)](https://packagist.org/packages/sieg/regex-dependency)
 
+The package is:
+
+* compliant to PSR-11.
+* follow the PSR-4 and PSR-12
+* works on PHP 7.2+.
+
 Simple keys
 -----------
 
