@@ -3,6 +3,8 @@
 namespace Sieg\Dependency\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Psr\Container\NotFoundExceptionInterface;
+use Sieg\Dependency\Service;
 use Sieg\Dependency\Container;
 
 class ContainerTest extends TestCase
@@ -75,33 +77,13 @@ class ContainerTest extends TestCase
         ], $result);
     }
 
-    public function testGetMatchedItemWithArguments()
-    {
-        $configuration = [
-            '/Controller\/.*?$/i' => function ($dependency, $key, $arguments = []) {
-                return $arguments;
-            }
-        ];
-
-        $container = new Container($configuration);
-
-        $arguments = ['argumentkey' => 'argumentValue'];
-        $result = $container->get('Controller/SomeExample', $arguments);
-        $this->assertSame($arguments, $result);
-
-        // check if new arguments fires new cache item
-        $arguments = ['othertry' => 'otherValue'];
-        $result = $container->get('Controller/SomeExample', $arguments);
-        $this->assertSame($arguments, $result);
-    }
-
     public function testGetUnMatchedException()
     {
         $configuration = [
             'key' => 'value'
         ];
 
-        $this->expectException(\Exception::class);
+        $this->expectException(NotFoundExceptionInterface::class);
 
         $container = new Container($configuration);
         $container->get('anything');
@@ -113,7 +95,7 @@ class ContainerTest extends TestCase
             'key' => null
         ];
 
-        $this->expectException(\Exception::class);
+        $this->expectException(NotFoundExceptionInterface::class);
 
         $container = new Container($configuration);
         $container->get('anything');
@@ -145,5 +127,35 @@ class ContainerTest extends TestCase
         $container = new Container($configuration);
         $this->assertTrue($container->has('Controller/SomeExample'));
         $this->assertFalse($container->has('somethingNotExisting'));
+    }
+
+    public function testGetSameServiceObjectOnDifferentCallsByDefault()
+    {
+        $configuration = [
+            'someKey' => function (Container $dependency, $match) {
+                return new Service(new \stdClass());
+            }
+        ];
+
+        $container = new Container($configuration);
+        $call1 = $container->get('someKey');
+        $call2 = $container->get('someKey');
+
+        $this->assertSame(spl_object_id($call1), spl_object_id($call2));
+    }
+
+    public function testGetDifferentItemObjectOnDifferentCallsIfItemReturned()
+    {
+        $configuration = [
+            'someKey' => function (Container $dependency, $match) {
+                return new \stdClass();
+            }
+        ];
+
+        $container = new Container($configuration);
+        $call1 = $container->get('someKey');
+        $call2 = $container->get('someKey');
+
+        $this->assertNotSame(spl_object_id($call1), spl_object_id($call2));
     }
 }

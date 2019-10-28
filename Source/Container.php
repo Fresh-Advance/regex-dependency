@@ -53,20 +53,18 @@ class Container implements ContainerInterface
      * Get dependency item
      *
      * @param string $key
-     * @param array $arguments
      *
      * @return mixed
      * @throws \Exception if nothing matches by the key in container configuration
      *
      */
-    public function get($key, $arguments = [])
+    public function get($key)
     {
-        $hash = $this->getCallHash($key, $arguments);
-        if (!isset($this->registry[$hash])) {
-            $this->registry[$hash] = $this->getNew($key, $arguments);
+        if (isset($this->registry[$key])) {
+            return $this->registry[$key];
+        } else {
+            return $this->callNotCachedItem($key);
         }
-
-        return $this->registry[$hash];
     }
 
     /**
@@ -86,30 +84,24 @@ class Container implements ContainerInterface
     /**
      * Get not cached item by dependency configuration
      *
+     * Cache the item if possible
+     *
      * @param string $key
-     * @param array $arguments
      *
      * @return mixed
      *
      * @throws NotFoundException if nothing matches by the key in container configuration
      */
-    public function getNew($key, $arguments = [])
+    protected function callNotCachedItem($key)
     {
         list($item, $match) = $this->getConfigurationByKey($key);
-        return is_callable($item) ? $item($this, $match, $arguments) : $item;
-    }
+        $result = is_callable($item) ? $item($this, $match) : $item;
 
-    /**
-     * Calculate hash by key and arguments
-     *
-     * @param string $key
-     * @param array $arguments
-     *
-     * @return string
-     */
-    protected function getCallHash($key, $arguments)
-    {
-        return md5($key . json_encode($arguments));
+        if ($result instanceof Service) {
+            $this->registry[$key] = $result = $result->getService();
+        }
+
+        return $result;
     }
 
     /**
