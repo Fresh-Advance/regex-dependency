@@ -3,7 +3,7 @@
 namespace Sieg\Dependency\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Sieg\Dependency\Service;
+use Sieg\Dependency\Contents\Service;
 
 class ServiceTest extends TestCase
 {

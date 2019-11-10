@@ -3,6 +3,7 @@
 namespace Sieg\Dependency;
 
 use Psr\Container\ContainerInterface;
+use Sieg\Dependency\Contents\Service;
 use Sieg\Dependency\Exception\NotFoundException;
 
 class Container implements ContainerInterface

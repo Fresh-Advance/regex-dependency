@@ -1,6 +1,6 @@
 <?php
 
-namespace Sieg\Dependency;
+namespace Sieg\Dependency\Contents;
 
 /**
  * Class Service

@@ -4,7 +4,7 @@ namespace Sieg\Dependency\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Container\NotFoundExceptionInterface;
-use Sieg\Dependency\Service;
+use Sieg\Dependency\Contents\Service;
 use Sieg\Dependency\Container;
 
 class ContainerTest extends TestCase
