@@ -37,15 +37,14 @@ Value as callback
 -----------------
 
     $configuration = [
-        '/Controller\/(.*?)$/i' => function ($dependency, $match, $arguments = []) {
+        '/Controller\/(.*?)$/i' => function ($dependency, $match) {
             return $match;
         }
     ];
 
-Three arguments is sent to callbacks:
+Two arguments is sent to callbacks:
     
 * $dependency - current instance of container
-* $match - array with match about key
+* $match - array with match results:
     - in string case like: ['Controller/SomeName']
-    - in regular expression case like: ['Controller/SomeName', 'SomeName']
-* $arguments - second parameter as array sent to get method.
+    - in regular expression case, the match response is provided: ['Controller/SomeName', 'SomeName']
