@@ -98,8 +98,11 @@ class Container implements ContainerInterface
         list($item, $match) = $this->getConfigurationByKey($key);
         $result = is_callable($item) ? $item($this, $match) : $item;
 
-        if ($result instanceof Service) {
-            $this->registry[$key] = $result = $result->getService();
+        if (!is_object($result)) {
+            $this->registry[$key] = $result;
+        } elseif ($result instanceof Service) {
+            $result = $result->getService();
+            $this->registry[$key] = $result;
         }
 
         return $result;

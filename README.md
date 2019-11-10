@@ -48,3 +48,14 @@ Two arguments is sent to callbacks:
 * $match - array with match results:
     - in string case like: ['Controller/SomeName']
     - in regular expression case, the match response is provided: ['Controller/SomeName', 'SomeName']
+    
+**Objects returned by callbacks are not cached by default**, but they can be, if wrapped as a Service.
+
+    $configuration = [
+        'someKey' => function (Container $dependency, $match) {
+            return new Service(new \stdClass());
+        }
+    ];
+
+    $container = new Container($configuration);
+    $call1 = $container->get('someKey');

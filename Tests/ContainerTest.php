@@ -4,8 +4,8 @@ namespace Sieg\Dependency\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Container\NotFoundExceptionInterface;
-use Sieg\Dependency\Contents\Service;
 use Sieg\Dependency\Container;
+use Sieg\Dependency\Contents\Service;
 
 class ContainerTest extends TestCase
 {
@@ -142,6 +142,43 @@ class ContainerTest extends TestCase
         $call2 = $container->get('someKey');
 
         $this->assertSame(spl_object_id($call1), spl_object_id($call2));
+    }
+
+    /**
+     * @dataProvider calculateValueDataProvider
+     */
+    public function testCallbackCalculationsCached($expectedResult, $expectedCalls)
+    {
+        $mock = $this->getMockBuilder(\stdClass::class)
+            ->addMethods(['someMethod'])
+            ->getMock();
+
+        $mock->expects($this->exactly($expectedCalls))->method('someMethod')->willReturn($expectedResult);
+
+        $configuration = [
+            'mockedClass' => $mock,
+            'someKey' => function (Container $dependency, $match) {
+                $mockedItem = $dependency->get('mockedClass');
+                return $mockedItem->someMethod();
+            }
+        ];
+
+        $container = new Container($configuration);
+        $result = $container->get('someKey');
+        $container->get('someKey');
+
+        $this->assertSame($expectedResult, $result);
+    }
+
+    public function calculateValueDataProvider()
+    {
+        return [
+            ['string', 1],
+            [123, 1],
+            [new \stdClass(), 2],
+            [true, 1],
+            [['array'], 1]
+        ];
     }
 
     public function testGetDifferentItemObjectOnDifferentCallsIfItemReturned()
