@@ -9,6 +9,8 @@ use Sieg\Dependency\Contents\Service;
 
 class ContainerTest extends TestCase
 {
+    protected CONST EXISTING_CONTROLLER = 'Controller/SomeExample';
+
     public function testConstructor()
     {
         $container = new Container();
@@ -69,10 +71,10 @@ class ContainerTest extends TestCase
         ];
 
         $container = new Container($configuration);
-        $result = $container->get('Controller/SomeExample');
+        $result = $container->get(self::EXISTING_CONTROLLER);
 
         $this->assertSame([
-            'Controller/SomeExample',
+            self::EXISTING_CONTROLLER,
             'SomeExample'
         ], $result);
     }
@@ -125,7 +127,7 @@ class ContainerTest extends TestCase
         ];
 
         $container = new Container($configuration);
-        $this->assertTrue($container->has('Controller/SomeExample'));
+        $this->assertTrue($container->has(self::EXISTING_CONTROLLER));
         $this->assertFalse($container->has('somethingNotExisting'));
     }
 
