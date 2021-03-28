@@ -11,7 +11,7 @@ jobs:
       - name: Run tests
         run: |
           composer install
-          vendor/bin/phpunit --coverage-clover="build/logs/clover.xml" Tests
+          XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-clover="build/logs/clover.xml" Tests
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
@@ -21,7 +21,7 @@ jobs:
           args: >
             -Dsonar.organization=fresh-advance
             -Dsonar.projectKey=Fresh-Advance_regex-dependency
-            -Dsonar.projectName=RegexDependency
+            -Dsonar.projectName=Regex Dependency
             -Dsonar.projectVersion=0.3
             -Dsonar.sources=Source
             -Dsonar.tests=Tests
