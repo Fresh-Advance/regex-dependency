@@ -1,7 +1,5 @@
 on:
-  push:
-    branches:
-      - actions
+  push
   pull_request:
     types: [opened, synchronize, reopened]
 name: Main Workflow
