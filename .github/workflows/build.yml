@@ -21,7 +21,7 @@ jobs:
           args: >
             -Dsonar.organization=fresh-advance
             -Dsonar.projectKey=Fresh-Advance_regex-dependency
-            -Dsonar.projectName=Regex Dependency
+            -Dsonar.projectName='Regex Dependency'
             -Dsonar.projectVersion=0.3
             -Dsonar.sources=Source
             -Dsonar.tests=Tests
