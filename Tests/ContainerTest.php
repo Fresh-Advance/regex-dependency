@@ -9,7 +9,7 @@ use Sieg\Dependency\Exception\NotFoundException;
 
 class ContainerTest extends TestCase
 {
-    protected CONST EXISTING_CONTROLLER = 'Controller/SomeExample';
+    protected const EXISTING_CONTROLLER = 'Controller/SomeExample';
 
     public function testConstructor(): void
     {
