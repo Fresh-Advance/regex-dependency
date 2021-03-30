@@ -1,9 +1,12 @@
 RegEx Dependency Container
 ==========================
 
-[![Build Status](https://travis-ci.org/Sieg/regex-dependency.svg?branch=master)](https://travis-ci.org/Sieg/regex-dependency)
-[![Coverage Status](https://coveralls.io/repos/github/Sieg/regex-dependency/badge.svg?branch=master)](https://coveralls.io/github/Sieg/regex-dependency?branch=master)
-[![Packagist](https://img.shields.io/packagist/v/sieg/regex-dependency.svg)](https://packagist.org/packages/sieg/regex-dependency)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Fresh-Advance_regex-dependency&metric=alert_status)](https://sonarcloud.io/dashboard?id=Fresh-Advance_regex-dependency)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Fresh-Advance_regex-dependency&metric=coverage)](https://sonarcloud.io/dashboard?id=Fresh-Advance_regex-dependency)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=Fresh-Advance_regex-dependency&metric=sqale_index)](https://sonarcloud.io/dashboard?id=Fresh-Advance_regex-dependency)
+[![Packagist](https://img.shields.io/packagist/v/fresh-advance/regex-dependency.svg)](https://packagist.org/packages/fresh-advance/regex-dependency)
+
+Very small, configurable service locator/DI container with possibility to describe keys as regular expressions.
 
 The package is:
 
