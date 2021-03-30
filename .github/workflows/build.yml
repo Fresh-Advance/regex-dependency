@@ -1,7 +1,7 @@
 on: [push, pull_request]
 name: Main Workflow
 jobs:
-  phpchecks:
+  style:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -16,6 +16,16 @@ jobs:
 
       - name: Run PhpCs
         run: composer phpcs
+
+  phpunit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install Dependencies
+        run: composer install
 
       - name: Run tests
         run: |
@@ -42,6 +52,8 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: logs
+
+      - run: ls
 
       - name: Fix phpunit logs
         run: |
