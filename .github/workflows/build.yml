@@ -56,7 +56,7 @@ jobs:
 
       - name: Fix phpunit logs
         run: |
-          sed -i 's/\/home\/runner\/work\/regex-dependency\/regex-dependency\///' build/logs/clover.xml  sonarcloud:
+          sed -i 's/\/home\/runner\/work\/regex-dependency\/regex-dependency\///' build/logs/clover.xml
 
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
