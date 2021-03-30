@@ -11,6 +11,7 @@ namespace Sieg\Dependency\Contents;
  */
 class Service
 {
+    /** @var Object */
     protected $service;
 
     /**

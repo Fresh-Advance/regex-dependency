@@ -14,7 +14,8 @@
   },
   "require-dev": {
     "phpunit/phpunit": "*",
-    "squizlabs/php_codesniffer": "*"
+    "squizlabs/php_codesniffer": "*",
+    "phpstan/phpstan": "^0.12.54"
   },
   "autoload": {
     "psr-4": {
@@ -25,5 +26,20 @@
     "psr-4": {
       "Sieg\\Dependency\\Tests\\": "Tests/"
     }
+  },
+  "scripts": {
+    "phpcs": "phpcs Source Tests --standard=PSR12",
+    "phpunit": "phpunit Tests",
+    "phpunit-coverage": "vendor/bin/phpunit --coverage-html=Coverage Tests",
+    "phpstan": "vendor/bin/phpstan analyse Source Tests --level 8",
+    "check": [
+      "@phpcs",
+      "@phpstan",
+      "@phpunit"
+    ],
+    "style": [
+      "@phpcs",
+      "@phpstan"
+    ]
   }
 }

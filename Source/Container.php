@@ -11,41 +11,45 @@ class Container implements ContainerInterface
     /**
      * Configuration variable
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $configuration = [];
 
     /**
      * Cache of processed items
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $registry = [];
 
     /**
      * Container constructor.
      *
-     * @param null|array $configuration
+     * @param ?array<mixed> $configuration
      */
-    public function __construct($configuration = null)
+    public function __construct(array $configuration = null)
     {
-        $configuration && $this->setConfiguration($configuration);
+        if ($configuration) {
+            $this->setConfiguration($configuration);
+        }
     }
 
     /**
      * Overwrite configuration contents
      *
-     * @param array $configuration
+     * @param array<mixed> $configuration
      */
-    public function setConfiguration($configuration)
+    public function setConfiguration(array $configuration): void
     {
         $this->configuration = $configuration;
     }
 
     /**
      * Get whole configuration content
+     *
+     * @return array<mixed>
      */
-    public function getConfiguration()
+    public function getConfiguration(): array
     {
         return $this->configuration;
     }
@@ -113,11 +117,11 @@ class Container implements ContainerInterface
      *
      * @param string $key
      *
-     * @return array($key, $matches)
+     * @return array<mixed>
      *
      * @throws NotFoundException if nothing matches by the key in container configuration
      */
-    protected function getConfigurationByKey($key)
+    protected function getConfigurationByKey(string $key): array
     {
         if (isset($this->configuration[$key])) {
             return [$this->configuration[$key], [$key]];

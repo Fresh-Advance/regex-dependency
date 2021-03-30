@@ -8,9 +8,17 @@ jobs:
         with:
           # Disabling shallow clone is recommended for improving relevancy of reporting
           fetch-depth: 0
-      - name: Run tests
+      - name: Install Dependencies
         run: |
           composer install
+      - name: Run PhpStan
+        run: |
+          composer phpstan
+      - name: Run PhpCs
+        run: |
+          composer phpcs
+      - name: Run tests
+        run: |
           XDEBUG_MODE=coverage vendor/bin/phpunit \
             --coverage-clover="build/logs/clover.xml" \
             --log-junit="build/logs/phpunit.xml" \

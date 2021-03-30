@@ -3,21 +3,21 @@
 namespace Sieg\Dependency\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Psr\Container\NotFoundExceptionInterface;
 use Sieg\Dependency\Container;
 use Sieg\Dependency\Contents\Service;
+use Sieg\Dependency\Exception\NotFoundException;
 
 class ContainerTest extends TestCase
 {
     protected CONST EXISTING_CONTROLLER = 'Controller/SomeExample';
 
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $container = new Container();
         $this->assertInstanceOf(Container::class, $container);
     }
 
-    public function testContainerGetConstructorConfiguration()
+    public function testContainerGetConstructorConfiguration(): void
     {
         $configuration = [
             'key' => 'value'
@@ -27,7 +27,7 @@ class ContainerTest extends TestCase
         $this->assertSame($configuration, $container->getConfiguration());
     }
 
-    public function testContainerSetGetConfiguration()
+    public function testContainerSetGetConfiguration(): void
     {
         $configuration = [
             'key' => 'value'
@@ -38,7 +38,7 @@ class ContainerTest extends TestCase
         $this->assertSame($configuration, $container->getConfiguration());
     }
 
-    public function testGetSimpleItem()
+    public function testGetSimpleItem(): void
     {
         $configuration = [
             'key' => 'value'
@@ -50,7 +50,7 @@ class ContainerTest extends TestCase
         $this->assertSame('value', $result);
     }
 
-    public function testGetCallbackItem()
+    public function testGetCallbackItem(): void
     {
         $configuration = [
             'key' => function ($dependency, $match) {
@@ -62,7 +62,7 @@ class ContainerTest extends TestCase
         $this->assertSame(['key'], $container->get('key'));
     }
 
-    public function testGetMatchedItem()
+    public function testGetMatchedItem(): void
     {
         $configuration = [
             '/Controller\/(.*?)$/i' => function ($dependency, $match) {
@@ -79,31 +79,31 @@ class ContainerTest extends TestCase
         ], $result);
     }
 
-    public function testGetUnMatchedException()
+    public function testGetUnMatchedException(): void
     {
         $configuration = [
             'key' => 'value'
         ];
 
-        $this->expectException(NotFoundExceptionInterface::class);
+        $this->expectException(NotFoundException::class);
 
         $container = new Container($configuration);
         $container->get('anything');
     }
 
-    public function testGetUnMatchedNullValue()
+    public function testGetUnMatchedNullValue(): void
     {
         $configuration = [
             'key' => null
         ];
 
-        $this->expectException(NotFoundExceptionInterface::class);
+        $this->expectException(NotFoundException::class);
 
         $container = new Container($configuration);
         $container->get('anything');
     }
 
-    public function testGetRecursiveDependency()
+    public function testGetRecursiveDependency(): void
     {
         $configuration = [
             'first' => 'someValue',
@@ -118,7 +118,7 @@ class ContainerTest extends TestCase
         $this->assertSame('someValue', $result);
     }
 
-    public function testHas()
+    public function testHas(): void
     {
         $configuration = [
             '/Controller\/(.*?)$/i' => function ($dependency, $match) {
@@ -131,7 +131,7 @@ class ContainerTest extends TestCase
         $this->assertFalse($container->has('somethingNotExisting'));
     }
 
-    public function testGetSameServiceObjectOnDifferentCallsByDefault()
+    public function testGetSameServiceObjectOnDifferentCallsByDefault(): void
     {
         $configuration = [
             'someKey' => function (Container $dependency, $match) {
@@ -147,9 +147,10 @@ class ContainerTest extends TestCase
     }
 
     /**
+     * @param mixed $expectedResult
      * @dataProvider calculateValueDataProvider
      */
-    public function testCallbackCalculationsCached($expectedResult, $expectedCalls)
+    public function testCallbackCalculationsCached($expectedResult, int $expectedCalls): void
     {
         $mock = $this->getMockBuilder(\stdClass::class)
             ->addMethods(['someMethod'])
@@ -172,7 +173,10 @@ class ContainerTest extends TestCase
         $this->assertSame($expectedResult, $result);
     }
 
-    public function calculateValueDataProvider()
+    /**
+     * @return array<mixed>
+     */
+    public function calculateValueDataProvider(): array
     {
         return [
             ['string', 1],
@@ -183,7 +187,7 @@ class ContainerTest extends TestCase
         ];
     }
 
-    public function testGetDifferentItemObjectOnDifferentCallsIfItemReturned()
+    public function testGetDifferentItemObjectOnDifferentCallsIfItemReturned(): void
     {
         $configuration = [
             'someKey' => function (Container $dependency, $match) {

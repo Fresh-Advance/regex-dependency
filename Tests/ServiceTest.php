@@ -7,7 +7,7 @@ use Sieg\Dependency\Contents\Service;
 
 class ServiceTest extends TestCase
 {
-    public function testGetService()
+    public function testGetService(): void
     {
         $serviceObject = new \stdClass();
         $serviceWrap = new Service($serviceObject);
