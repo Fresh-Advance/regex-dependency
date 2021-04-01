@@ -1,6 +1,6 @@
 <?php
 
-namespace FreshAdvance\Dependency\Tests;
+namespace FreshAdvance\Dependency\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use FreshAdvance\Dependency\Contents\Service;

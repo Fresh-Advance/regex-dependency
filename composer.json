@@ -29,8 +29,8 @@
   },
   "scripts": {
     "phpcs": "phpcs Source Tests --standard=PSR12",
-    "phpunit": "phpunit Tests",
-    "phpunit-coverage": "vendor/bin/phpunit --coverage-html=Coverage Tests",
+    "phpunit": "phpunit -c Tests/phpunit.xml Tests",
+    "phpunit-coverage": "vendor/bin/phpunit -c Tests/phpunit.xml --coverage-html=Coverage Tests",
     "phpstan": "vendor/bin/phpstan analyse Source Tests --level 8",
     "check": [
       "@phpcs",

@@ -5,7 +5,7 @@
   <coverage processUncoveredFiles="true"
             includeUncoveredFiles="true">
     <include>
-      <directory suffix=".php">Source</directory>
+      <directory suffix=".php">../Source</directory>
     </include>
   </coverage>
 </phpunit>
