@@ -1,10 +1,10 @@
 <?php
 
-namespace Sieg\Dependency;
+namespace FreshAdvance\Dependency;
 
 use Psr\Container\ContainerInterface;
-use Sieg\Dependency\Contents\Service;
-use Sieg\Dependency\Exception\NotFoundException;
+use FreshAdvance\Dependency\Contents\Service;
+use FreshAdvance\Dependency\Exception\NotFoundException;
 
 class Container implements ContainerInterface
 {

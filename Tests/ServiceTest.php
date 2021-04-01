@@ -1,9 +1,9 @@
 <?php
 
-namespace Sieg\Dependency\Tests;
+namespace FreshAdvance\Dependency\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Sieg\Dependency\Contents\Service;
+use FreshAdvance\Dependency\Contents\Service;
 
 class ServiceTest extends TestCase
 {

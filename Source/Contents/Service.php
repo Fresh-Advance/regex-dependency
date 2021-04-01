@@ -1,13 +1,13 @@
 <?php
 
-namespace Sieg\Dependency\Contents;
+namespace FreshAdvance\Dependency\Contents;
 
 /**
  * Class Service
  *
  * The class is used to find out if callback object should be written to registry or not.
  *
- * @package Sieg\Dependency
+ * @package FreshAdvance\Dependency
  */
 class Service
 {

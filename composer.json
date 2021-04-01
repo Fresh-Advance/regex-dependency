@@ -19,12 +19,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Sieg\\Dependency\\": "Source"
+      "FreshAdvance\\Dependency\\": "Source"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Sieg\\Dependency\\Tests\\": "Tests/"
+      "FreshAdvance\\Dependency\\Tests\\": "Tests/"
     }
   },
   "scripts": {

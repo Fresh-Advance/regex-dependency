@@ -1,11 +1,11 @@
 <?php
 
-namespace Sieg\Dependency\Tests;
+namespace FreshAdvance\Dependency\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Sieg\Dependency\Container;
-use Sieg\Dependency\Contents\Service;
-use Sieg\Dependency\Exception\NotFoundException;
+use FreshAdvance\Dependency\Container;
+use FreshAdvance\Dependency\Contents\Service;
+use FreshAdvance\Dependency\Exception\NotFoundException;
 
 class ContainerTest extends TestCase
 {

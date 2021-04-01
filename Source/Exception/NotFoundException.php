@@ -1,6 +1,6 @@
 <?php
 
-namespace Sieg\Dependency\Exception;
+namespace FreshAdvance\Dependency\Exception;
 
 use Psr\Container\NotFoundExceptionInterface;
 
