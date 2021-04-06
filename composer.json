@@ -1,5 +1,6 @@
 {
   "name": "fresh-advance/regex-dependency",
+  "description": "Small, configurable service locator/DI container with possibility to describe keys as regular expressions. The component can be used as a Router too.",
   "type": "library",
   "license": "MIT",
   "authors": [
