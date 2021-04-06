@@ -4,10 +4,11 @@ namespace FreshAdvance\Dependency;
 
 class Configuration implements Interfaces\Configuration
 {
+    /** @var array<string|array> */
     protected array $configurations = [];
 
     /**
-     * @param string|array ...$configurations
+     * @param array<string|array> ...$configurations
      */
     public function __construct(...$configurations)
     {

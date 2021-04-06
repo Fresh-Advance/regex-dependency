@@ -18,7 +18,8 @@ class ConfigurationTest extends TestCase
     {
         $expected = [
             'key1' => 'value1',
-            'key2' => function(){},
+            'key2' => function () {
+            },
             'key3' => null,
             'key4' => 10,
         ];
@@ -28,7 +29,8 @@ class ConfigurationTest extends TestCase
 
     public function testDeepLoadConfiguration(): void
     {
-        $closureExample = function(){};
+        $closureExample = function () {
+        };
         $expected = [
             'key1' => 'value1',
             'key2' => $closureExample,
@@ -53,7 +55,8 @@ class ConfigurationTest extends TestCase
 
     public function testDeepLoadReverseConfiguration(): void
     {
-        $closureExample = function(){};
+        $closureExample = function () {
+        };
         $expected = [
             'firstkey1' => 'othervalue',
             'firstkey2' => 'firstvalue2',
@@ -78,7 +81,8 @@ class ConfigurationTest extends TestCase
 
     public function testDeepFileLoadConfiguration(): void
     {
-        $closureExample = function(){};
+        $closureExample = function () {
+        };
         $expected = [
             'key1' => 'value1',
             'key2' => $closureExample,
@@ -107,7 +111,8 @@ class ConfigurationTest extends TestCase
 
     public function testDeepFileLoadReverseConfiguration(): void
     {
-        $closureExample = function(){};
+        $closureExample = function () {
+        };
         $expected = [
             'key1' => 'value1',
             'key2' => $closureExample,
