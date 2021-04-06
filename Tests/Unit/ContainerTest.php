@@ -2,6 +2,7 @@
 
 namespace FreshAdvance\Dependency\Tests\Unit;
 
+use FreshAdvance\Dependency\Configuration;
 use PHPUnit\Framework\TestCase;
 use FreshAdvance\Dependency\Container;
 use FreshAdvance\Dependency\Contents\Service;
@@ -19,30 +20,32 @@ class ContainerTest extends TestCase
 
     public function testContainerGetConstructorConfiguration(): void
     {
-        $configuration = [
+        $expected = [
             'key' => 'value'
         ];
+        $configuration = new Configuration($expected);
 
         $container = new Container($configuration);
-        $this->assertSame($configuration, $container->getConfiguration());
+        $this->assertSame($expected, $container->getConfiguration());
     }
 
     public function testContainerSetGetConfiguration(): void
     {
-        $configuration = [
+        $expected = [
             'key' => 'value'
         ];
+        $configuration = new Configuration($expected);
 
         $container = new Container();
         $container->setConfiguration($configuration);
-        $this->assertSame($configuration, $container->getConfiguration());
+        $this->assertSame($expected, $container->getConfiguration());
     }
 
     public function testGetSimpleItem(): void
     {
-        $configuration = [
+        $configuration = new Configuration([
             'key' => 'value'
-        ];
+        ]);
 
         $container = new Container($configuration);
         $result = $container->get('key');
@@ -52,11 +55,11 @@ class ContainerTest extends TestCase
 
     public function testGetCallbackItem(): void
     {
-        $configuration = [
+        $configuration = new Configuration([
             'key' => function ($dependency, $match) {
                 return $match;
             }
-        ];
+        ]);
 
         $container = new Container($configuration);
         $this->assertSame(['key'], $container->get('key'));
@@ -64,11 +67,11 @@ class ContainerTest extends TestCase
 
     public function testGetMatchedItem(): void
     {
-        $configuration = [
+        $configuration = new Configuration([
             '/Controller\/(.*?)$/i' => function ($dependency, $match) {
                 return $match;
             }
-        ];
+        ]);
 
         $container = new Container($configuration);
         $result = $container->get(self::EXISTING_CONTROLLER);
@@ -81,9 +84,9 @@ class ContainerTest extends TestCase
 
     public function testGetUnMatchedException(): void
     {
-        $configuration = [
+        $configuration = new Configuration([
             'key' => 'value'
-        ];
+        ]);
 
         $this->expectException(NotFoundException::class);
 
@@ -93,9 +96,9 @@ class ContainerTest extends TestCase
 
     public function testGetUnMatchedNullValue(): void
     {
-        $configuration = [
+        $configuration = new Configuration([
             'key' => null
-        ];
+        ]);
 
         $this->expectException(NotFoundException::class);
 
@@ -105,12 +108,12 @@ class ContainerTest extends TestCase
 
     public function testGetRecursiveDependency(): void
     {
-        $configuration = [
+        $configuration = new Configuration([
             'first' => 'someValue',
             'second' => function (Container $dependency, $key) {
                 return $dependency->get('first');
             }
-        ];
+        ]);
 
         $container = new Container($configuration);
         $result = $container->get('second');
@@ -120,11 +123,11 @@ class ContainerTest extends TestCase
 
     public function testHas(): void
     {
-        $configuration = [
+        $configuration = new Configuration([
             '/Controller\/(.*?)$/i' => function ($dependency, $match) {
                 return $match;
             }
-        ];
+        ]);
 
         $container = new Container($configuration);
         $this->assertTrue($container->has(self::EXISTING_CONTROLLER));
@@ -133,11 +136,11 @@ class ContainerTest extends TestCase
 
     public function testGetSameServiceObjectOnDifferentCallsByDefault(): void
     {
-        $configuration = [
+        $configuration = new Configuration([
             'someKey' => function (Container $dependency, $match) {
                 return new Service(new \stdClass());
             }
-        ];
+        ]);
 
         $container = new Container($configuration);
         $call1 = $container->get('someKey');
@@ -158,13 +161,13 @@ class ContainerTest extends TestCase
 
         $mock->expects($this->exactly($expectedCalls))->method('someMethod')->willReturn($expectedResult);
 
-        $configuration = [
+        $configuration = new Configuration([
             'mockedClass' => $mock,
             'someKey' => function (Container $dependency, $match) {
                 $mockedItem = $dependency->get('mockedClass');
                 return $mockedItem->someMethod();
             }
-        ];
+        ]);
 
         $container = new Container($configuration);
         $result = $container->get('someKey');
@@ -189,11 +192,11 @@ class ContainerTest extends TestCase
 
     public function testGetDifferentItemObjectOnDifferentCallsIfItemReturned(): void
     {
-        $configuration = [
+        $configuration = new Configuration([
             'someKey' => function (Container $dependency, $match) {
                 return new \stdClass();
             }
-        ];
+        ]);
 
         $container = new Container($configuration);
         $call1 = $container->get('someKey');

@@ -2,6 +2,7 @@
 
 namespace FreshAdvance\Dependency;
 
+use FreshAdvance\Dependency\Interfaces\Configuration as ConfigurationInterface;
 use Psr\Container\ContainerInterface;
 use FreshAdvance\Dependency\Contents\Service;
 use FreshAdvance\Dependency\Exception\NotFoundException;
@@ -22,26 +23,16 @@ class Container implements ContainerInterface
      */
     protected $registry = [];
 
-    /**
-     * Container constructor.
-     *
-     * @param ?array<mixed> $configuration
-     */
-    public function __construct(array $configuration = null)
+    public function __construct(ConfigurationInterface $configuration = null)
     {
         if ($configuration) {
             $this->setConfiguration($configuration);
         }
     }
 
-    /**
-     * Overwrite configuration contents
-     *
-     * @param array<mixed> $configuration
-     */
-    public function setConfiguration(array $configuration): void
+    public function setConfiguration(ConfigurationInterface $configuration): void
     {
-        $this->configuration = $configuration;
+        $this->configuration = $configuration->fetch();
     }
 
     /**

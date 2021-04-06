@@ -6,7 +6,8 @@ RegEx Dependency Container
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=Fresh-Advance_regex-dependency&metric=sqale_index)](https://sonarcloud.io/dashboard?id=Fresh-Advance_regex-dependency)
 [![Packagist](https://img.shields.io/packagist/v/fresh-advance/regex-dependency.svg)](https://packagist.org/packages/fresh-advance/regex-dependency)
 
-Very small, configurable service locator/DI container with possibility to describe keys as regular expressions.
+Small, configurable service locator/DI container with possibility to describe keys as 
+regular expressions. The component can be used as a Router too.
 
 The package is:
 

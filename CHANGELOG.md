@@ -8,8 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Code quality tools: sonarcloud, phpcs, phpstan
+- Base configuration for loading and combinind multiple configurations
 
 ### Changed
+- Configuration interface required by Container constructor, not simple array anymore
 - Repository transferred to FreshAdvance organization 
 - Vendor name changed to fresh-advance
 - Namespace changed to FreshAdvence
