@@ -30,6 +30,7 @@ jobs:
       - name: Run tests
         run: |
           XDEBUG_MODE=coverage vendor/bin/phpunit \
+            -c Tests/phpunit.xml \
             --coverage-clover="build/logs/clover.xml" \
             --log-junit="build/logs/phpunit.xml" \
             Tests
