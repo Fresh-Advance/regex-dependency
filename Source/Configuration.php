@@ -8,7 +8,7 @@ class Configuration implements Interfaces\Configuration
     protected array $configurations = [];
 
     /**
-     * @param array<string|array> ...$configurations
+     * @param array<string|array> $configurations
      */
     public function __construct(...$configurations)
     {
