@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Code quality tools: sonarcloud, phpcs, phpstan
 - Base configuration for loading and combinind multiple configurations
+- Support different regex openings/closings
 
 ### Changed
 - Configuration interface required by Container constructor, not simple array anymore
@@ -16,6 +17,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Vendor name changed to fresh-advance
 - Namespace changed to FreshAdvence
 - Travis is not used anymore. Github actions is used as ci
+
+### Fixed
+- Fix problematic slash cases
+- Improve performance by removing tests of expression on runtime 
 
 ## [v0.3.0] -  2019-11-10
 

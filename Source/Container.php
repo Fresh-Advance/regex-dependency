@@ -9,12 +9,11 @@ use FreshAdvance\Dependency\Exception\NotFoundException;
 
 class Container implements ContainerInterface
 {
-    /**
-     * Configuration variable
-     *
-     * @var array<mixed>
-     */
+    /** @var array<mixed> */
     protected array $configuration = [];
+
+    /** @var array<mixed> */
+    protected array $expressions = [];
 
     /**
      * Cache of processed items
@@ -32,7 +31,15 @@ class Container implements ContainerInterface
 
     public function setConfiguration(ConfigurationInterface $configuration): void
     {
-        $this->configuration = $configuration->fetch();
+        $patterns = $configuration->fetch();
+        foreach ($patterns as $pattern => $contents) {
+            // test if configuration key is expression or regular item
+            if (@preg_match($pattern, '') !== false) {
+                $this->expressions[$pattern] = $contents;
+            } else {
+                $this->configuration[$pattern] = $contents;
+            }
+        }
     }
 
     /**
@@ -42,7 +49,7 @@ class Container implements ContainerInterface
      */
     public function getConfiguration(): array
     {
-        return $this->configuration;
+        return array_merge($this->configuration, $this->expressions);
     }
 
     /**
@@ -58,9 +65,9 @@ class Container implements ContainerInterface
     {
         if (isset($this->registry[$key])) {
             return $this->registry[$key];
-        } else {
-            return $this->callNotCachedItem($key);
         }
+
+        return $this->callNotCachedItem($key);
     }
 
     /**
@@ -116,14 +123,11 @@ class Container implements ContainerInterface
     {
         if (isset($this->configuration[$key])) {
             return [$this->configuration[$key], [$key]];
-        } else {
-            foreach ($this->configuration as $configurationKey => $item) {
-                if (
-                    strpos($configurationKey, "/") === 0
-                    && preg_match($configurationKey, $key, $matches)
-                ) {
-                    return [$item, $matches];
-                }
+        }
+
+        foreach ($this->expressions as $configurationKey => $item) {
+            if (preg_match($configurationKey, $key, $matches)) {
+                return [$item, $matches];
             }
         }
 

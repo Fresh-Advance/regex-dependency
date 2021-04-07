@@ -126,11 +126,13 @@ class ContainerTest extends TestCase
         $configuration = new Collection([
             '/Controller\/(.*?)$/i' => function ($dependency, $match) {
                 return $match;
-            }
+            },
+            '/' => 'Special case with one boundary'
         ]);
 
         $container = new Container($configuration);
         $this->assertTrue($container->has(self::EXISTING_CONTROLLER));
+        $this->assertTrue($container->has('/'));
         $this->assertFalse($container->has('somethingNotExisting'));
     }
 
