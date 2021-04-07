@@ -3,6 +3,9 @@
 namespace FreshAdvance\Dependency\Tests\Unit;
 
 use FreshAdvance\Dependency\Configuration;
+use FreshAdvance\Dependency\Tests\Unit\Example\FirstConfiguration;
+use FreshAdvance\Dependency\Tests\Unit\Example\SecondConfiguration;
+use FreshAdvance\Dependency\Tests\Unit\Example\SimpleConfiguration;
 use PHPUnit\Framework\TestCase;
 
 class ConfigurationTest extends TestCase
@@ -27,6 +30,23 @@ class ConfigurationTest extends TestCase
         $this->assertEquals($expected, $configuration->fetch());
     }
 
+    public function testSimpleConfigCanBeMergedIn(): void
+    {
+        $regularPattern = [
+            'key1' => 'value1'
+        ];
+        $expected = [
+            'key1' => 'value1',
+            'someKey' => 'someValue'
+        ];
+
+        $configuration = new Configuration(
+            $regularPattern,
+            SimpleConfiguration::class
+        );
+        $this->assertEquals($expected, $configuration->fetch());
+    }
+
     public function testDeepLoadConfiguration(): void
     {
         $closureExample = function () {
@@ -48,7 +68,7 @@ class ConfigurationTest extends TestCase
                 'key4' => 10,
                 'firstkey1' => 'othervalue',
             ],
-            \FreshAdvance\Dependency\Tests\Unit\Example\FirstConfiguration::class
+            FirstConfiguration::class
         );
         $this->assertEquals($expected, $configuration->fetch());
     }
@@ -67,7 +87,7 @@ class ConfigurationTest extends TestCase
             'key4' => 10,
         ];
         $configuration = new Configuration(
-            \FreshAdvance\Dependency\Tests\Unit\Example\FirstConfiguration::class,
+            FirstConfiguration::class,
             [
                 'key1' => 'value1',
                 'key2' => $closureExample,
@@ -104,7 +124,7 @@ class ConfigurationTest extends TestCase
                 'firstkey1' => 'othervalue',
                 'secondkey1' => 'othervalue',
             ],
-            \FreshAdvance\Dependency\Tests\Unit\Example\SecondConfiguration::class
+            SecondConfiguration::class
         );
         $this->assertEquals($expected, $configuration->fetch());
     }
@@ -126,7 +146,7 @@ class ConfigurationTest extends TestCase
             'secondkey3' => 'secondvalue3'
         ];
         $configuration = new Configuration(
-            \FreshAdvance\Dependency\Tests\Unit\Example\SecondConfiguration::class,
+            SecondConfiguration::class,
             [
                 'key1' => 'value1',
                 'key2' => $closureExample,
