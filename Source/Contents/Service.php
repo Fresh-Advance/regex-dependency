@@ -2,32 +2,18 @@
 
 namespace FreshAdvance\Dependency\Contents;
 
-/**
- * Class Service
- *
- * The class is used to find out if callback object should be written to registry or not.
- *
- * @package FreshAdvance\Dependency
- */
-class Service
-{
-    /** @var Object */
-    protected $service;
+use FreshAdvance\Dependency\Interfaces\Service as ServiceInterface;
 
-    /**
-     * Service constructor.
-     *
-     * @param Object $service
-     */
-    public function __construct($service)
+class Service implements ServiceInterface
+{
+    protected object $service;
+
+    public function __construct(object $service)
     {
         $this->service = $service;
     }
 
-    /**
-     * @return Object
-     */
-    public function getService()
+    public function getService(): object
     {
         return $this->service;
     }

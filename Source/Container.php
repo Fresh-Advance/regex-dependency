@@ -14,14 +14,14 @@ class Container implements ContainerInterface
      *
      * @var array<mixed>
      */
-    protected $configuration = [];
+    protected array $configuration = [];
 
     /**
      * Cache of processed items
      *
      * @var array<mixed>
      */
-    protected $registry = [];
+    protected array $registry = [];
 
     public function __construct(ConfigurationInterface $configuration = null)
     {
