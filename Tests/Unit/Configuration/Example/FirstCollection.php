@@ -1,10 +1,10 @@
 <?php
 
-namespace FreshAdvance\Dependency\Tests\Unit\Example;
+namespace FreshAdvance\Dependency\Tests\Unit\Configuration\Example;
 
-use FreshAdvance\Dependency\Configuration;
+use FreshAdvance\Dependency\Configuration\Collection;
 
-class FirstConfiguration extends Configuration
+class FirstCollection extends Collection
 {
     protected array $configurations = [
         [

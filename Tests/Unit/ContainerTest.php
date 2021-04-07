@@ -2,7 +2,7 @@
 
 namespace FreshAdvance\Dependency\Tests\Unit;
 
-use FreshAdvance\Dependency\Configuration;
+use FreshAdvance\Dependency\Configuration\Collection;
 use PHPUnit\Framework\TestCase;
 use FreshAdvance\Dependency\Container;
 use FreshAdvance\Dependency\Contents\Service;
@@ -23,7 +23,7 @@ class ContainerTest extends TestCase
         $expected = [
             'key' => 'value'
         ];
-        $configuration = new Configuration($expected);
+        $configuration = new Collection($expected);
 
         $container = new Container($configuration);
         $this->assertSame($expected, $container->getConfiguration());
@@ -34,7 +34,7 @@ class ContainerTest extends TestCase
         $expected = [
             'key' => 'value'
         ];
-        $configuration = new Configuration($expected);
+        $configuration = new Collection($expected);
 
         $container = new Container();
         $container->setConfiguration($configuration);
@@ -43,7 +43,7 @@ class ContainerTest extends TestCase
 
     public function testGetSimpleItem(): void
     {
-        $configuration = new Configuration([
+        $configuration = new Collection([
             'key' => 'value'
         ]);
 
@@ -55,7 +55,7 @@ class ContainerTest extends TestCase
 
     public function testGetCallbackItem(): void
     {
-        $configuration = new Configuration([
+        $configuration = new Collection([
             'key' => function ($dependency, $match) {
                 return $match;
             }
@@ -67,7 +67,7 @@ class ContainerTest extends TestCase
 
     public function testGetMatchedItem(): void
     {
-        $configuration = new Configuration([
+        $configuration = new Collection([
             '/Controller\/(.*?)$/i' => function ($dependency, $match) {
                 return $match;
             }
@@ -84,7 +84,7 @@ class ContainerTest extends TestCase
 
     public function testGetUnMatchedException(): void
     {
-        $configuration = new Configuration([
+        $configuration = new Collection([
             'key' => 'value'
         ]);
 
@@ -96,7 +96,7 @@ class ContainerTest extends TestCase
 
     public function testGetUnMatchedNullValue(): void
     {
-        $configuration = new Configuration([
+        $configuration = new Collection([
             'key' => null
         ]);
 
@@ -108,7 +108,7 @@ class ContainerTest extends TestCase
 
     public function testGetRecursiveDependency(): void
     {
-        $configuration = new Configuration([
+        $configuration = new Collection([
             'first' => 'someValue',
             'second' => function (Container $dependency, $key) {
                 return $dependency->get('first');
@@ -123,7 +123,7 @@ class ContainerTest extends TestCase
 
     public function testHas(): void
     {
-        $configuration = new Configuration([
+        $configuration = new Collection([
             '/Controller\/(.*?)$/i' => function ($dependency, $match) {
                 return $match;
             }
@@ -136,7 +136,7 @@ class ContainerTest extends TestCase
 
     public function testGetSameServiceObjectOnDifferentCallsByDefault(): void
     {
-        $configuration = new Configuration([
+        $configuration = new Collection([
             'someKey' => function (Container $dependency, $match) {
                 return new Service(new \stdClass());
             }
@@ -161,7 +161,7 @@ class ContainerTest extends TestCase
 
         $mock->expects($this->exactly($expectedCalls))->method('someMethod')->willReturn($expectedResult);
 
-        $configuration = new Configuration([
+        $configuration = new Collection([
             'mockedClass' => $mock,
             'someKey' => function (Container $dependency, $match) {
                 $mockedItem = $dependency->get('mockedClass');
@@ -192,7 +192,7 @@ class ContainerTest extends TestCase
 
     public function testGetDifferentItemObjectOnDifferentCallsIfItemReturned(): void
     {
-        $configuration = new Configuration([
+        $configuration = new Collection([
             'someKey' => function (Container $dependency, $match) {
                 return new \stdClass();
             }

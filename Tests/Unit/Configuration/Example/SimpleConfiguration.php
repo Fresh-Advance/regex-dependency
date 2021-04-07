@@ -1,6 +1,6 @@
 <?php
 
-namespace FreshAdvance\Dependency\Tests\Unit\Example;
+namespace FreshAdvance\Dependency\Tests\Unit\Configuration\Example;
 
 use FreshAdvance\Dependency\Interfaces\Configuration;
 

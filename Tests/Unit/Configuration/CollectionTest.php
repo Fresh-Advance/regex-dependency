@@ -2,18 +2,18 @@
 
 namespace FreshAdvance\Dependency\Tests\Unit;
 
-use FreshAdvance\Dependency\Configuration;
-use FreshAdvance\Dependency\Tests\Unit\Example\FirstConfiguration;
-use FreshAdvance\Dependency\Tests\Unit\Example\SecondConfiguration;
-use FreshAdvance\Dependency\Tests\Unit\Example\SimpleConfiguration;
+use FreshAdvance\Dependency\Configuration\Collection;
+use FreshAdvance\Dependency\Tests\Unit\Configuration\Example\FirstCollection;
+use FreshAdvance\Dependency\Tests\Unit\Configuration\Example\SecondCollection;
+use FreshAdvance\Dependency\Tests\Unit\Configuration\Example\SimpleConfiguration;
 use PHPUnit\Framework\TestCase;
 
-class ConfigurationTest extends TestCase
+class CollectionTest extends TestCase
 {
     public function testConstructor(): void
     {
-        $configuration = new Configuration();
-        $this->assertInstanceOf(Configuration::class, $configuration);
+        $configuration = new Collection();
+        $this->assertInstanceOf(Collection::class, $configuration);
         $this->assertSame([], $configuration->fetch());
     }
 
@@ -26,7 +26,7 @@ class ConfigurationTest extends TestCase
             'key3' => null,
             'key4' => 10,
         ];
-        $configuration = new Configuration($expected);
+        $configuration = new Collection($expected);
         $this->assertEquals($expected, $configuration->fetch());
     }
 
@@ -40,7 +40,7 @@ class ConfigurationTest extends TestCase
             'someKey' => 'someValue'
         ];
 
-        $configuration = new Configuration(
+        $configuration = new Collection(
             $regularPattern,
             SimpleConfiguration::class
         );
@@ -60,7 +60,7 @@ class ConfigurationTest extends TestCase
             'firstkey2' => 'firstvalue2',
             'firstkey3' => 'firstvalue3',
         ];
-        $configuration = new Configuration(
+        $configuration = new Collection(
             [
                 'key1' => 'value1',
                 'key2' => $closureExample,
@@ -68,7 +68,7 @@ class ConfigurationTest extends TestCase
                 'key4' => 10,
                 'firstkey1' => 'othervalue',
             ],
-            FirstConfiguration::class
+            FirstCollection::class
         );
         $this->assertEquals($expected, $configuration->fetch());
     }
@@ -86,8 +86,8 @@ class ConfigurationTest extends TestCase
             'key3' => null,
             'key4' => 10,
         ];
-        $configuration = new Configuration(
-            FirstConfiguration::class,
+        $configuration = new Collection(
+            FirstCollection::class,
             [
                 'key1' => 'value1',
                 'key2' => $closureExample,
@@ -115,7 +115,7 @@ class ConfigurationTest extends TestCase
             'secondkey2' => 'secondvalue2',
             'secondkey3' => 'secondvalue3'
         ];
-        $configuration = new Configuration(
+        $configuration = new Collection(
             [
                 'key1' => 'value1',
                 'key2' => $closureExample,
@@ -124,7 +124,7 @@ class ConfigurationTest extends TestCase
                 'firstkey1' => 'othervalue',
                 'secondkey1' => 'othervalue',
             ],
-            SecondConfiguration::class
+            SecondCollection::class
         );
         $this->assertEquals($expected, $configuration->fetch());
     }
@@ -145,8 +145,8 @@ class ConfigurationTest extends TestCase
             'secondkey2' => 'secondvalue2',
             'secondkey3' => 'secondvalue3'
         ];
-        $configuration = new Configuration(
-            SecondConfiguration::class,
+        $configuration = new Collection(
+            SecondCollection::class,
             [
                 'key1' => 'value1',
                 'key2' => $closureExample,

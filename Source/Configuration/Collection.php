@@ -1,8 +1,10 @@
 <?php
 
-namespace FreshAdvance\Dependency;
+namespace FreshAdvance\Dependency\Configuration;
 
-class Configuration implements Interfaces\Configuration
+use FreshAdvance\Dependency\Interfaces\Configuration;
+
+class Collection implements Configuration
 {
     /** @var array<string|array> */
     protected array $configurations = [];
@@ -22,7 +24,7 @@ class Configuration implements Interfaces\Configuration
         $result = [];
         foreach ($this->configurations as $oneConfiguration) {
             if (is_string($oneConfiguration)) {
-                /** @var Interfaces\Configuration $deepConfiguration */
+                /** @var Configuration $deepConfiguration */
                 $deepConfiguration = new $oneConfiguration();
                 $oneConfiguration = $deepConfiguration->fetch();
             }
