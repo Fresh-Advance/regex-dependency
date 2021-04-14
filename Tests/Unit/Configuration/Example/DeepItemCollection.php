@@ -3,8 +3,10 @@
 namespace FreshAdvance\Dependency\Tests\Unit\Configuration\Example;
 
 use FreshAdvance\Dependency\Configuration\Collection;
+use FreshAdvance\Dependency\Configuration\Item;
+use FreshAdvance\Dependency\Interfaces\ConfigurationItemCollection;
 
-class SecondCollection extends Collection
+class DeepItemCollection implements ConfigurationItemCollection
 {
     protected array $configurations = [
         FirstCollection::class,

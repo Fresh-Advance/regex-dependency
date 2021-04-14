@@ -3,159 +3,134 @@
 namespace FreshAdvance\Dependency\Tests\Unit;
 
 use FreshAdvance\Dependency\Configuration\Collection;
-use FreshAdvance\Dependency\Tests\Unit\Configuration\Example\FirstCollection;
-use FreshAdvance\Dependency\Tests\Unit\Configuration\Example\SecondCollection;
-use FreshAdvance\Dependency\Tests\Unit\Configuration\Example\SimpleConfiguration;
+use FreshAdvance\Dependency\Configuration\Item;
+use FreshAdvance\Dependency\Tests\Unit\Configuration\Example\DeepItemCollection;
+use FreshAdvance\Dependency\Tests\Unit\Configuration\Example\SimpleItemCollection;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \FreshAdvance\Dependency\Configuration\Collection
+ */
 class CollectionTest extends TestCase
 {
     public function testConstructor(): void
     {
         $configuration = new Collection();
         $this->assertInstanceOf(Collection::class, $configuration);
-        $this->assertSame([], $configuration->fetch());
+        $this->assertSame([], $configuration->getItems());
     }
 
     public function testConstructorConfiguration(): void
     {
         $expected = [
-            'key1' => 'value1',
-            'key2' => function () {
-            },
-            'key3' => null,
-            'key4' => 10,
+            new Item('key1', 'value1'),
+            new Item('key2', 'value2'),
         ];
-        $configuration = new Collection($expected);
-        $this->assertEquals($expected, $configuration->fetch());
+        $configuration = new Collection(...$expected);
+        $this->assertEquals($expected, $configuration->getItems());
+    }
+
+    public function testSimpleIdentifierOverwrite(): void
+    {
+        $expected = [
+            new Item('key1', 'value2'),
+        ];
+        $configuration = new Collection(
+            new Item('key1', 'value1'),
+            new Item('key1', 'value2')
+        );
+        $this->assertEquals($expected, $configuration->getItems());
     }
 
     public function testSimpleConfigCanBeMergedIn(): void
     {
-        $regularPattern = [
-            'key1' => 'value1'
-        ];
         $expected = [
-            'key1' => 'value1',
-            'someKey' => 'someValue'
+            new Item('key1', 'value1'),
+            new Item('someKey', 'someValue'),
         ];
 
         $configuration = new Collection(
-            $regularPattern,
-            SimpleConfiguration::class
+            new Item('key1', 'value1'),
+            new SimpleItemCollection()
         );
-        $this->assertEquals($expected, $configuration->fetch());
+
+        $fetchedConfiguration = $configuration->getItems();
+        $this->assertContainsOnlyInstancesOf(Item::class, $fetchedConfiguration);
+        $this->assertEquals($expected, $fetchedConfiguration);
     }
 
-    public function testDeepLoadConfiguration(): void
+    public function testSimpleConfigCanBeMergedInAndOverwritten(): void
+    {
+        $expected = [
+            new Item('key1', 'value1'),
+            new Item('someKey', 'otherValue'),
+        ];
+
+        $configuration = new Collection(
+            new Item('key1', 'value1'),
+            new SimpleItemCollection,
+            new Item('someKey', 'otherValue')
+        );
+
+        $fetchedConfiguration = $configuration->getItems();
+        $this->assertContainsOnlyInstancesOf(Item::class, $fetchedConfiguration);
+        $this->assertEquals($expected, $fetchedConfiguration);
+    }
+
+    public function testDeepLoadConfigurationCanBeOverwritten(): void
     {
         $closureExample = function () {
         };
+
         $expected = [
-            'key1' => 'value1',
-            'key2' => $closureExample,
-            'key3' => null,
-            'key4' => 10,
-            'firstkey1' => 'firstvalue1',
-            'firstkey2' => 'firstvalue2',
-            'firstkey3' => 'firstvalue3',
+            new Item('key1', 'value1'),
+            new Item('key2', $closureExample),
+            new Item('key3', null),
+            new Item('key4', 10),
+            new Item('someKey', 'someValue'),
+            new Item('secondKey1', 'secondValue1'),
+            new Item('secondKey2', 'secondValue2')
         ];
+
         $configuration = new Collection(
-            [
-                'key1' => 'value1',
-                'key2' => $closureExample,
-                'key3' => null,
-                'key4' => 10,
-                'firstkey1' => 'othervalue',
-            ],
-            FirstCollection::class
+            new Collection(
+                new Item('key1', 'value1'),
+                new Item('key2', $closureExample),
+                new Item('key3', null),
+                new Item('key4', 10)
+            ),
+            new DeepItemCollection()
         );
-        $this->assertEquals($expected, $configuration->fetch());
+
+        $this->assertEquals($expected, $configuration->getItems());
     }
 
-    public function testDeepLoadReverseConfiguration(): void
+    public function testReverseDeepLoadConfigurationCanBeOverwritten(): void
     {
         $closureExample = function () {
         };
-        $expected = [
-            'firstkey1' => 'othervalue',
-            'firstkey2' => 'firstvalue2',
-            'firstkey3' => 'firstvalue3',
-            'key1' => 'value1',
-            'key2' => $closureExample,
-            'key3' => null,
-            'key4' => 10,
-        ];
-        $configuration = new Collection(
-            FirstCollection::class,
-            [
-                'key1' => 'value1',
-                'key2' => $closureExample,
-                'key3' => null,
-                'key4' => 10,
-                'firstkey1' => 'othervalue'
-            ],
-        );
-        $this->assertEquals($expected, $configuration->fetch());
-    }
 
-    public function testDeepFileLoadConfiguration(): void
-    {
-        $closureExample = function () {
-        };
         $expected = [
-            'key1' => 'value1',
-            'key2' => $closureExample,
-            'key3' => null,
-            'key4' => 10,
-            'firstkey1' => 'firstvalue1',
-            'firstkey2' => 'firstvalue2',
-            'firstkey3' => 'firstvalue3',
-            'secondkey1' => 'secondvalue1',
-            'secondkey2' => 'secondvalue2',
-            'secondkey3' => 'secondvalue3'
+            new Item('someKey', 'someOtherValue'),
+            new Item('secondKey1', 'secondValue1'),
+            new Item('secondKey2', 'secondValue2'),
+            new Item('key1', 'value1'),
+            new Item('key2', $closureExample),
+            new Item('key3', null),
+            new Item('key4', 10),
         ];
-        $configuration = new Collection(
-            [
-                'key1' => 'value1',
-                'key2' => $closureExample,
-                'key3' => null,
-                'key4' => 10,
-                'firstkey1' => 'othervalue',
-                'secondkey1' => 'othervalue',
-            ],
-            SecondCollection::class
-        );
-        $this->assertEquals($expected, $configuration->fetch());
-    }
 
-    public function testDeepFileLoadReverseConfiguration(): void
-    {
-        $closureExample = function () {
-        };
-        $expected = [
-            'key1' => 'value1',
-            'key2' => $closureExample,
-            'key3' => null,
-            'key4' => 10,
-            'firstkey1' => 'othervalue',
-            'firstkey2' => 'firstvalue2',
-            'firstkey3' => 'firstvalue3',
-            'secondkey1' => 'othervalue',
-            'secondkey2' => 'secondvalue2',
-            'secondkey3' => 'secondvalue3'
-        ];
         $configuration = new Collection(
-            SecondCollection::class,
-            [
-                'key1' => 'value1',
-                'key2' => $closureExample,
-                'key3' => null,
-                'key4' => 10,
-                'firstkey1' => 'othervalue',
-                'secondkey1' => 'othervalue',
-            ]
+            new DeepItemCollection(),
+            new Item('someKey', 'someOtherValue'),
+            new Collection(
+                new Item('key1', 'value1'),
+                new Item('key2', $closureExample),
+                new Item('key3', null),
+                new Item('key4', 10)
+            ),
         );
-        $this->assertEquals($expected, $configuration->fetch());
+
+        $this->assertEquals($expected, $configuration->getItems());
     }
 }

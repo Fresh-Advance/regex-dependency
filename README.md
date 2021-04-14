@@ -15,51 +15,58 @@ The package is:
 * follow the PSR-4 and PSR-12
 * works on PHP 7.2+.
 
-Simple keys
------------
+## Simple case
 
-    $configuration = [
-        'key' => 'value'
-    ];
-    
-    $container = new Container($configuration);
-    $keyValue = $container->get('key');
-
-Match keys
-----------
-
-Configuration key should start with "/" to be searched as regular expression. 
-    
-    $configuration = [
-        '/Controller\/.*?$/i' => 'value'
-    ];
+    $configuration = new Collection(
+        new Item('key', 'value'),
+    );
 
     $container = new Container($configuration);
-    $keyValue = $container->get('Controller/SomeExample');
+    $value = $container->get('key');
 
-Value as callback
------------------
+    var_dump:
+      string(5) "value"
 
-    $configuration = [
-        '/Controller\/(.*?)$/i' => function ($dependency, $match) {
+## Pattern case
+
+    $configuration = new Collection(
+        new Pattern('examplePattern', '/Example\/.*?$/i', 'SomeValue'),
+    );
+    
+    $container = new Container($configuration);
+    $value = $container->get('Example/Something');
+    
+    var_dump:
+      string(9) "SomeValue"
+
+## Value as callback
+
+    $configuration = new Collection(
+        new Pattern('examplePattern', '/Example\/(?P<special>.*?)$/i', function ($dependency, $match) {
             return $match;
-        }
-    ];
+        }),
+    );
+    
+    $container = new Container($configuration);
+    $keyValue = $container->get('Example/Something');
+
+    var_dump:
+      array(3) {
+        [0] => string(17) "Example/Something"
+        'special' => string(9) "Something"
+        [1] => string(9) "Something"
+      }
 
 Two arguments is sent to callbacks:
     
-* $dependency - current instance of container
-* $match - array with match results:
-    - in string case like: ['Controller/SomeName']
-    - in regular expression case, the match response is provided: ['Controller/SomeName', 'SomeName']
-    
-**Objects returned by callbacks are not cached by default**, but they can be, if wrapped as a Service.
+* Container $dependency - current instance of container
+* array $match - array with match results: the match response is provided: ['Controller/SomeName', 'SomeName']
 
-    $configuration = [
-        'someKey' => function (Container $dependency, $match) {
+## Service registry
+**Objects returned by callbacks are not cached by default**, but they can be, if wrapped as a **Service**.
+
+    $configuration = new Collection(
+        new Item('someKey', function (Container $dependency) {
             return new Service(new \stdClass());
-        }
-    ];
-
-    $container = new Container($configuration);
-    $call1 = $container->get('someKey');
+        })
+    );

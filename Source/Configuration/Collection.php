@@ -19,6 +19,22 @@ class Collection implements Configuration
         }
     }
 
+    protected function addItems($items): void
+    {
+        foreach($items as $oneItem) {
+            $this->addOneItem($oneItem);
+        }
+    }
+
+    protected function addOneItem($item): void
+    {
+        if ($item instanceof ConfigurationItemCollection) {
+            $this->addItems($item->getItems());
+        } else {
+            $this->configurationItems[$item->getId()] = $item;
+        }
+    }
+
     public function fetch(): array
     {
         $result = [];

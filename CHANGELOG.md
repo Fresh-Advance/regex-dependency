@@ -8,11 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Code quality tools: sonarcloud, phpcs, phpstan
-- Base configuration for loading and combinind multiple configurations
+- Collection class for loading and combinined multiple configurations
 - Support different regex openings/closings
 
 ### Changed
-- Configuration interface required by Container constructor, not simple array anymore
+- ConfigurationItemCollection interface object required by Container constructor, no simple array anymore
 - Repository transferred to FreshAdvance organization 
 - Vendor name changed to fresh-advance
 - Namespace changed to FreshAdvence
