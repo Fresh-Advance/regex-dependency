@@ -71,3 +71,4 @@ jobs:
             -Dsonar.sourceEncoding=UTF-8
             -Dsonar.php.coverage.reportPaths=build/logs/clover.xml
             -Dsonar.php.tests.reportPath=build/logs/phpunit.xml
+            -Dsonar.cpd.php.minimumLines=5
