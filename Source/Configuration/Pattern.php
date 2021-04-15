@@ -2,6 +2,7 @@
 
 namespace FreshAdvance\Dependency\Configuration;
 
+use FreshAdvance\Dependency\Exception\PatternConfigurationException;
 use FreshAdvance\Dependency\Interfaces\ConfigurationItem;
 
 class Pattern implements ConfigurationItem
@@ -19,6 +20,10 @@ class Pattern implements ConfigurationItem
      */
     public function __construct(string $id, string $key, $value)
     {
+        if (@preg_match($key, '') === false) {
+            throw new PatternConfigurationException();
+        }
+
         $this->key = $key;
         $this->value = $value;
         $this->id = $id;

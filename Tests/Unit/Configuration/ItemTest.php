@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ItemTest extends TestCase
 {
-    public function testItemDefaultValues()
+    public function testItemDefaultValues(): void
     {
         $item = new Item("someKey", "someValue");
 
@@ -19,7 +19,7 @@ class ItemTest extends TestCase
         $this->assertSame("someValue", $item->getValue());
     }
 
-    public function testItemSpecialId()
+    public function testItemSpecialId(): void
     {
         $item = new Item("someKey", "someValue", "specialId");
 

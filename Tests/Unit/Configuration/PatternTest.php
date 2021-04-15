@@ -2,8 +2,8 @@
 
 namespace FreshAdvance\Dependency\Tests\Unit;
 
-use FreshAdvance\Dependency\Configuration\Item;
 use FreshAdvance\Dependency\Configuration\Pattern;
+use FreshAdvance\Dependency\Exception\PatternConfigurationException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -11,12 +11,18 @@ use PHPUnit\Framework\TestCase;
  */
 class PatternTest extends TestCase
 {
-    public function testItemDefaultValues()
+    public function testItemDefaultValues(): void
     {
-        $item = new Pattern("someId", "someKey", "someValue");
+        $item = new Pattern("someId", "/someKey/i", "someValue");
 
         $this->assertSame("someId", $item->getId());
-        $this->assertSame("someKey", $item->getSearchKey());
+        $this->assertSame("/someKey/i", $item->getSearchKey());
         $this->assertSame("someValue", $item->getValue());
+    }
+
+    public function testPatternInitializationFailsIfNotRegexGivenAsKey(): void
+    {
+        $this->expectException(PatternConfigurationException::class);
+        $item = new Pattern("someId", "someKey", "someValue");
     }
 }
