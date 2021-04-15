@@ -22,6 +22,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix problematic slash cases
 - Improve performance by removing tests of expression on runtime 
 
+### Removed
+- Container::getConfiguration
+    - As configuration is now applied on container, and updates container state, there is no way (and actually no point) to get reusable configuration in a simple way anymore.
+
 ## [v0.3.0] -  2019-11-10
 
 ### Added

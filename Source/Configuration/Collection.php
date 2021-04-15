@@ -2,21 +2,20 @@
 
 namespace FreshAdvance\Dependency\Configuration;
 
-use FreshAdvance\Dependency\Interfaces\Configuration;
+use FreshAdvance\Dependency\Interfaces\ConfigurationItemCollection;
+use FreshAdvance\Dependency\Interfaces\ConfigurationItem;
 
-class Collection implements Configuration
+class Collection implements ConfigurationItemCollection
 {
-    /** @var array<string|array> */
-    protected array $configurations = [];
+    /** @var array<string,ConfigurationItem> */
+    protected array $configurationItems = [];
 
     /**
-     * @param array<string|array> $configurations
+     * @param array<ConfigurationItem|ConfigurationItemCollection> $configurationItems
      */
-    public function __construct(...$configurations)
+    public function __construct(...$configurationItems)
     {
-        if ($configurations) {
-            $this->configurations = $configurations;
-        }
+        $this->addItems($configurationItems);
     }
 
     protected function addItems($items): void
@@ -35,19 +34,11 @@ class Collection implements Configuration
         }
     }
 
-    public function fetch(): array
+    /**
+     * @return array<ConfigurationItem>
+     */
+    public function getItems(): array
     {
-        $result = [];
-        foreach ($this->configurations as $oneConfiguration) {
-            if (is_string($oneConfiguration)) {
-                /** @var Configuration $deepConfiguration */
-                $deepConfiguration = new $oneConfiguration();
-                $oneConfiguration = $deepConfiguration->fetch();
-            }
-
-            $result = array_merge($result, $oneConfiguration);
-        }
-
-        return $result;
+        return array_values($this->configurationItems);
     }
 }

@@ -2,10 +2,10 @@
 
 namespace FreshAdvance\Dependency;
 
-use FreshAdvance\Dependency\Interfaces\Configuration as ConfigurationInterface;
-use Psr\Container\ContainerInterface;
 use FreshAdvance\Dependency\Contents\Service;
 use FreshAdvance\Dependency\Exception\NotFoundException;
+use FreshAdvance\Dependency\Interfaces\ConfigurationItemCollection as ConfigurationInterface;
+use Psr\Container\ContainerInterface;
 
 class Container implements ContainerInterface
 {
@@ -31,25 +31,14 @@ class Container implements ContainerInterface
 
     public function setConfiguration(ConfigurationInterface $configuration): void
     {
-        $patterns = $configuration->fetch();
-        foreach ($patterns as $pattern => $contents) {
-            // test if configuration key is expression or regular item
-            if (@preg_match($pattern, '') !== false) {
-                $this->expressions[$pattern] = $contents;
+        $items = $configuration->getItems();
+        foreach ($items as $oneItem) {
+            if ($oneItem instanceof \FreshAdvance\Dependency\Configuration\Pattern) {
+                $this->expressions[$oneItem->getSearchKey()] = $oneItem->getValue();
             } else {
-                $this->configuration[$pattern] = $contents;
+                $this->configuration[$oneItem->getSearchKey()] = $oneItem->getValue();
             }
         }
-    }
-
-    /**
-     * Get whole configuration content
-     *
-     * @return array<mixed>
-     */
-    public function getConfiguration(): array
-    {
-        return array_merge($this->configuration, $this->expressions);
     }
 
     /**

@@ -8,12 +8,15 @@ use FreshAdvance\Dependency\Interfaces\ConfigurationItemCollection;
 
 class DeepItemCollection implements ConfigurationItemCollection
 {
-    protected array $configurations = [
-        FirstCollection::class,
-        [
-            'secondkey1' => 'secondvalue1',
-            'secondkey2' => 'secondvalue2',
-            'secondkey3' => 'secondvalue3'
-        ]
-    ];
+    public function getItems(): array
+    {
+        $collection = new Collection(
+            new Item('someKey', 'deepOriginalValue'),
+            new SimpleItemCollection(),
+            new Item('secondKey1', 'secondValue1'),
+            new Item('secondKey2', 'secondValue2')
+        );
+
+        return $collection->getItems();
+    }
 }
