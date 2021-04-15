@@ -68,7 +68,7 @@ class CollectionTest extends TestCase
 
         $configuration = new Collection(
             new Item('key1', 'value1'),
-            new SimpleItemCollection,
+            new SimpleItemCollection(),
             new Item('someKey', 'otherValue')
         );
 

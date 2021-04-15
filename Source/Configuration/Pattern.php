@@ -10,6 +10,7 @@ class Pattern implements ConfigurationItem
 
     protected string $id;
 
+    /** @var mixed */
     protected $value;
 
     /**

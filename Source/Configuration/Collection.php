@@ -11,27 +11,38 @@ class Collection implements ConfigurationItemCollection
     protected array $configurationItems = [];
 
     /**
-     * @param array<ConfigurationItem|ConfigurationItemCollection> $configurationItems
+     * @param ConfigurationItem|ConfigurationItemCollection $configurationItems
      */
     public function __construct(...$configurationItems)
     {
-        $this->addItems($configurationItems);
+        $this->processItems($configurationItems);
     }
 
-    protected function addItems($items): void
+    /**
+     * @param array<ConfigurationItem|ConfigurationItemCollection> $items
+     */
+    protected function processItems(array $items): void
     {
-        foreach($items as $oneItem) {
-            $this->addOneItem($oneItem);
+        foreach ($items as $oneItem) {
+            $this->processOneItem($oneItem);
         }
     }
 
-    protected function addOneItem($item): void
+    /**
+     * @param ConfigurationItem|ConfigurationItemCollection $item
+     */
+    protected function processOneItem($item): void
     {
         if ($item instanceof ConfigurationItemCollection) {
-            $this->addItems($item->getItems());
+            $this->processItems($item->getItems());
         } else {
-            $this->configurationItems[$item->getId()] = $item;
+            $this->addOneItem($item);
         }
+    }
+
+    protected function addOneItem(ConfigurationItem $item): void
+    {
+        $this->configurationItems[$item->getId()] = $item;
     }
 
     /**

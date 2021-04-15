@@ -10,6 +10,7 @@ class Item implements ConfigurationItem
 
     protected string $id;
 
+    /** @var mixed */
     protected $value;
 
     /**
